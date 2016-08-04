@@ -9,16 +9,20 @@
 import SpriteKit
 enum Layer: CGFloat {
 	case Background
+	case Obstacle
 	case Foreground
 	case Player
 }
 
 class GameScene: SKScene {
 	let kGravity: CGFloat = -150.0 // 重力
-	let kImpluse: CGFloat = 200 // 上升力
+	let kImpluse: CGFloat = 150 // 上升力
 	let kGroundSpeed: CGFloat = 150 // 地面移动速度
 	let worldNode = SKNode()
 	let player = SKSpriteNode(imageNamed: "Bird0")
+	let kBottomObstacleMinFraction: CGFloat = 0.1
+	let kBottomObstacleMaxFraction: CGFloat = 0.6
+	let kGapMultiplier: CGFloat = 3.5
 	
 	var playableStart: CGFloat = 0
 	var playableHeight: CGFloat = 0
@@ -39,6 +43,7 @@ class GameScene: SKScene {
 		setupBackground()
 		setupForeground()
 		setupPlayer()
+		startSpawning()
 	}
 	
 	override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
@@ -117,5 +122,48 @@ class GameScene: SKScene {
 	func flapPlayer() {
 		runAction(flappingAction)
 		playerVelocity = CGPointMake(0, kImpluse)
+	}
+	
+	func createObstacle() -> SKSpriteNode {
+		let sprite = SKSpriteNode(imageNamed: "Cactus")
+		sprite.zPosition = Layer.Obstacle.rawValue
+		return sprite
+	}
+	
+	func spawnObstacle() {
+		let bottomObstacle = createObstacle()
+		let startX = size.width + bottomObstacle.size.width / 2
+		let bottomObstacleMin = playableStart - bottomObstacle.size.height / 2 + playableHeight * kBottomObstacleMinFraction
+		let bottomObstacleMax = playableStart - bottomObstacle.size.height / 2 + playableHeight * kBottomObstacleMaxFraction
+		
+		bottomObstacle.position = CGPointMake(startX, CGFloat.random(min: bottomObstacleMin, max: bottomObstacleMax))
+		worldNode.addChild(bottomObstacle)
+		
+		let topObstacle = createObstacle()
+		topObstacle.zPosition = CGFloat(180).degreesToRadians()
+		topObstacle.position = CGPoint(x: startX, y: bottomObstacle.position.y + bottomObstacle.size.height / 2 + topObstacle.size.height / 2 + player.size.height * kGapMultiplier)
+		worldNode.addChild(topObstacle)
+		
+		let moveX = size.width + topObstacle.size.width
+		let moveDuration = moveX / kGroundSpeed
+		let sequence = SKAction.sequence([
+			SKAction.moveByX(-moveX, y: 0, duration: NSTimeInterval(moveDuration)),
+			SKAction.removeFromParent()
+		])
+		topObstacle.runAction(sequence)
+		bottomObstacle.runAction(sequence)
+	}
+	
+	func startSpawning() {
+		let firstDelay = SKAction.waitForDuration(1.75)
+		let spawn = SKAction.runBlock(spawnObstacle)
+		let everyDelay = SKAction.waitForDuration(1.5)
+		
+		let spawnSequence = SKAction.sequence([spawn, everyDelay])
+		
+		let foreverSpawn = SKAction.repeatActionForever(spawnSequence)
+		let overallSequence = SKAction.sequence([firstDelay, foreverSpawn])
+		
+		runAction(overallSequence)
 	}
 }
