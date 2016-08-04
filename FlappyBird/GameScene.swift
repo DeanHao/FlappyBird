@@ -16,6 +16,7 @@ enum Layer: CGFloat {
 class GameScene: SKScene {
 	let kGravity: CGFloat = -150.0 // 重力
 	let kImpluse: CGFloat = 200 // 上升力
+	let kGroundSpeed: CGFloat = 150 // 地面移动速度
 	let worldNode = SKNode()
 	let player = SKSpriteNode(imageNamed: "Bird0")
 	
@@ -55,6 +56,7 @@ class GameScene: SKScene {
 		
 		// print("两次更新的间隔时间为\(dt*1000)毫秒")
 		updatePlayer()
+		updateForeground()
 	}
 	
 	func setupBackground() {
@@ -69,11 +71,15 @@ class GameScene: SKScene {
 	}
 	
 	func setupForeground() {
-		let foreground = SKSpriteNode(imageNamed: "Ground")
-		foreground.anchorPoint = CGPoint(x: 0, y: 1)
-		foreground.position = CGPoint(x: 0, y: playableStart)
-		foreground.zPosition = Layer.Foreground.rawValue
-		worldNode.addChild(foreground)
+		for i in 0..<2 {
+			let foreground = SKSpriteNode(imageNamed: "Ground")
+			foreground.anchorPoint = CGPoint(x: 0, y: 1)
+			// foreground.position = CGPoint(x: 0, y: playableStart)
+			foreground.position = CGPoint(x: CGFloat(i) * size.width, y: playableStart)
+			foreground.zPosition = Layer.Foreground.rawValue
+			foreground.name = "foreground"
+			worldNode.addChild(foreground)
+		}
 	}
 	
 	func setupPlayer() {
@@ -94,6 +100,18 @@ class GameScene: SKScene {
 		if player.position.y - player.size.height / 2 < playableStart {
 			player.position = CGPoint(x: player.position.x, y: playableStart + player.size.height / 2) // player 静止在 playableStart
 		}
+	}
+	
+	func updateForeground() {
+		worldNode.enumerateChildNodesWithName("foreground", usingBlock: { (node, stop) -> Void in
+			if let foreground = node as? SKSpriteNode {
+				let moveAmt = CGPointMake(-self.kGroundSpeed * CGFloat(self.dt), 0)
+				foreground.position += moveAmt
+				if foreground.position.x < -foreground.size.width {
+					foreground.position += CGPoint(x: foreground.size.width * CGFloat(2), y: 0)
+				}
+			}
+		})
 	}
 	
 	func flapPlayer() {
