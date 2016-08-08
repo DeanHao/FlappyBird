@@ -13,27 +13,27 @@
 		4FA2793B1BC1638300C7F50A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4FA279391BC1638300C7F50A /* Main.storyboard */; };
 		4FA2793D1BC1638300C7F50A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FA2793C1BC1638300C7F50A /* Assets.xcassets */; };
 		4FA279401BC1638300C7F50A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4FA2793E1BC1638300C7F50A /* LaunchScreen.storyboard */; };
-		4FA279611BC163DF00C7F50A /* backgrounds.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 4FA279491BC163DF00C7F50A /* backgrounds.atlas */; settings = {ASSET_TAGS = (); }; };
-		4FA279621BC163DF00C7F50A /* sprites.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 4FA2794A1BC163DF00C7F50A /* sprites.atlas */; settings = {ASSET_TAGS = (); }; };
-		4FA279631BC163DF00C7F50A /* CGFloat+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA2794C1BC163DF00C7F50A /* CGFloat+Extensions.swift */; settings = {ASSET_TAGS = (); }; };
-		4FA279641BC163DF00C7F50A /* CGPoint+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA2794D1BC163DF00C7F50A /* CGPoint+Extensions.swift */; settings = {ASSET_TAGS = (); }; };
-		4FA279651BC163DF00C7F50A /* CGVector+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA2794E1BC163DF00C7F50A /* CGVector+Extensions.swift */; settings = {ASSET_TAGS = (); }; };
-		4FA279661BC163DF00C7F50A /* Int+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA2794F1BC163DF00C7F50A /* Int+Extensions.swift */; settings = {ASSET_TAGS = (); }; };
-		4FA279671BC163DF00C7F50A /* SKAction+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA279501BC163DF00C7F50A /* SKAction+Extensions.swift */; settings = {ASSET_TAGS = (); }; };
-		4FA279681BC163DF00C7F50A /* SKAction+SpecialEffects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA279511BC163DF00C7F50A /* SKAction+SpecialEffects.swift */; settings = {ASSET_TAGS = (); }; };
-		4FA279691BC163DF00C7F50A /* SKColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA279521BC163DF00C7F50A /* SKColor+Extensions.swift */; settings = {ASSET_TAGS = (); }; };
-		4FA2796A1BC163DF00C7F50A /* SKNode+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA279531BC163DF00C7F50A /* SKNode+Extensions.swift */; settings = {ASSET_TAGS = (); }; };
-		4FA2796B1BC163DF00C7F50A /* SKTAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA279541BC163DF00C7F50A /* SKTAudio.swift */; settings = {ASSET_TAGS = (); }; };
-		4FA2796C1BC163DF00C7F50A /* SKTEffects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA279551BC163DF00C7F50A /* SKTEffects.swift */; settings = {ASSET_TAGS = (); }; };
-		4FA2796D1BC163DF00C7F50A /* SKTTimingFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA279561BC163DF00C7F50A /* SKTTimingFunctions.swift */; settings = {ASSET_TAGS = (); }; };
-		4FA2796E1BC163DF00C7F50A /* Vector3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA279571BC163DF00C7F50A /* Vector3.swift */; settings = {ASSET_TAGS = (); }; };
-		4FA2796F1BC163DF00C7F50A /* coin.wav in Resources */ = {isa = PBXBuildFile; fileRef = 4FA2795A1BC163DF00C7F50A /* coin.wav */; settings = {ASSET_TAGS = (); }; };
-		4FA279701BC163DF00C7F50A /* ding.wav in Resources */ = {isa = PBXBuildFile; fileRef = 4FA2795B1BC163DF00C7F50A /* ding.wav */; settings = {ASSET_TAGS = (); }; };
-		4FA279711BC163DF00C7F50A /* falling.wav in Resources */ = {isa = PBXBuildFile; fileRef = 4FA2795C1BC163DF00C7F50A /* falling.wav */; settings = {ASSET_TAGS = (); }; };
-		4FA279721BC163DF00C7F50A /* flapping.wav in Resources */ = {isa = PBXBuildFile; fileRef = 4FA2795D1BC163DF00C7F50A /* flapping.wav */; settings = {ASSET_TAGS = (); }; };
-		4FA279731BC163DF00C7F50A /* hitGround.wav in Resources */ = {isa = PBXBuildFile; fileRef = 4FA2795E1BC163DF00C7F50A /* hitGround.wav */; settings = {ASSET_TAGS = (); }; };
-		4FA279741BC163DF00C7F50A /* pop.wav in Resources */ = {isa = PBXBuildFile; fileRef = 4FA2795F1BC163DF00C7F50A /* pop.wav */; settings = {ASSET_TAGS = (); }; };
-		4FA279751BC163DF00C7F50A /* whack.wav in Resources */ = {isa = PBXBuildFile; fileRef = 4FA279601BC163DF00C7F50A /* whack.wav */; settings = {ASSET_TAGS = (); }; };
+		4FA279611BC163DF00C7F50A /* backgrounds.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 4FA279491BC163DF00C7F50A /* backgrounds.atlas */; };
+		4FA279621BC163DF00C7F50A /* sprites.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 4FA2794A1BC163DF00C7F50A /* sprites.atlas */; };
+		4FA279631BC163DF00C7F50A /* CGFloat+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA2794C1BC163DF00C7F50A /* CGFloat+Extensions.swift */; };
+		4FA279641BC163DF00C7F50A /* CGPoint+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA2794D1BC163DF00C7F50A /* CGPoint+Extensions.swift */; };
+		4FA279651BC163DF00C7F50A /* CGVector+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA2794E1BC163DF00C7F50A /* CGVector+Extensions.swift */; };
+		4FA279661BC163DF00C7F50A /* Int+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA2794F1BC163DF00C7F50A /* Int+Extensions.swift */; };
+		4FA279671BC163DF00C7F50A /* SKAction+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA279501BC163DF00C7F50A /* SKAction+Extensions.swift */; };
+		4FA279681BC163DF00C7F50A /* SKAction+SpecialEffects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA279511BC163DF00C7F50A /* SKAction+SpecialEffects.swift */; };
+		4FA279691BC163DF00C7F50A /* SKColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA279521BC163DF00C7F50A /* SKColor+Extensions.swift */; };
+		4FA2796A1BC163DF00C7F50A /* SKNode+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA279531BC163DF00C7F50A /* SKNode+Extensions.swift */; };
+		4FA2796B1BC163DF00C7F50A /* SKTAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA279541BC163DF00C7F50A /* SKTAudio.swift */; };
+		4FA2796C1BC163DF00C7F50A /* SKTEffects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA279551BC163DF00C7F50A /* SKTEffects.swift */; };
+		4FA2796D1BC163DF00C7F50A /* SKTTimingFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA279561BC163DF00C7F50A /* SKTTimingFunctions.swift */; };
+		4FA2796E1BC163DF00C7F50A /* Vector3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA279571BC163DF00C7F50A /* Vector3.swift */; };
+		4FA2796F1BC163DF00C7F50A /* coin.wav in Resources */ = {isa = PBXBuildFile; fileRef = 4FA2795A1BC163DF00C7F50A /* coin.wav */; };
+		4FA279701BC163DF00C7F50A /* ding.wav in Resources */ = {isa = PBXBuildFile; fileRef = 4FA2795B1BC163DF00C7F50A /* ding.wav */; };
+		4FA279711BC163DF00C7F50A /* falling.wav in Resources */ = {isa = PBXBuildFile; fileRef = 4FA2795C1BC163DF00C7F50A /* falling.wav */; };
+		4FA279721BC163DF00C7F50A /* flapping.wav in Resources */ = {isa = PBXBuildFile; fileRef = 4FA2795D1BC163DF00C7F50A /* flapping.wav */; };
+		4FA279731BC163DF00C7F50A /* hitGround.wav in Resources */ = {isa = PBXBuildFile; fileRef = 4FA2795E1BC163DF00C7F50A /* hitGround.wav */; };
+		4FA279741BC163DF00C7F50A /* pop.wav in Resources */ = {isa = PBXBuildFile; fileRef = 4FA2795F1BC163DF00C7F50A /* pop.wav */; };
+		4FA279751BC163DF00C7F50A /* whack.wav in Resources */ = {isa = PBXBuildFile; fileRef = 4FA279601BC163DF00C7F50A /* whack.wav */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -201,6 +201,7 @@
 				TargetAttributes = {
 					4FA2792D1BC1638300C7F50A = {
 						CreatedOnToolsVersion = 7.0.1;
+						DevelopmentTeam = WB347HF2CZ;
 					};
 				};
 			};
@@ -374,10 +375,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = FlappyBird/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.pmst.FlappyBird;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dean.FlappyBird;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -385,10 +389,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = FlappyBird/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.pmst.FlappyBird;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dean.FlappyBird;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};

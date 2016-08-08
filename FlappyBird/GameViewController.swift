@@ -3,7 +3,7 @@
 //  FlappyBird
 //
 //  Created by pmst on 15/10/4.
-//  Copyright (c) 2015年 pmst. All rights reserved.
+//  Copyright (c) 2016年 Dean. All rights reserved.
 //
 
 import UIKit
@@ -24,10 +24,10 @@ class GameViewController: UIViewController {
 				let aspectRatio = skView.bounds.size.height / skView.bounds.size.width
 				let scene = GameScene(size: CGSize(width: 320, height: 320 * aspectRatio), gameState: .MainMenu)
 				
-				skView.showsFPS = true
-				skView.showsPhysics = true
-				skView.showsNodeCount = true
-				skView.ignoresSiblingOrder = true
+//				skView.showsFPS = true // 显示帧数
+//				skView.showsPhysics = true // 显示当前场景下节点个数
+//				skView.showsNodeCount = true // 显示物理体
+//				skView.ignoresSiblingOrder = true // 忽略节点添加顺序
 				
 				scene.scaleMode = .AspectFill
 				

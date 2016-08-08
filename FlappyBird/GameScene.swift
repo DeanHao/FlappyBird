@@ -3,7 +3,7 @@
 //  FlappyBird
 //
 //  Created by pmst on 15/10/4.
-//  Copyright (c) 2015年 pmst. All rights reserved.
+//  Copyright (c) 2016年 Dean. All rights reserved.
 //
 
 import SpriteKit
@@ -14,6 +14,7 @@ enum Layer: CGFloat {
 	case Foreground
 	case Player
 	case UI
+	case Flash
 }
 
 enum GameState {
@@ -42,6 +43,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	let kFontName = "AmericanTypewriter-Bold"
 	let kMargin: CGFloat = 20.0
 	let kAnimDelay = 0.3
+	let kMinDegrees: CGFloat = -90
+	let kMaxDegrees: CGFloat = 25
+	let kAngularVelocity: CGFloat = 1000.0 // 角速度
 	
 	let worldNode = SKNode()
 	let player = SKSpriteNode(imageNamed: "Bird0")
@@ -57,6 +61,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	var gameState: GameState = .Play
 	var scoreLabel: SKLabelNode!
 	var score = 0
+	var playerAngularVelocity: CGFloat = 0.0
+	var lastTouchTime: NSTimeInterval = 0
+	var lastTouchY: CGFloat = 0.0
 	
 	let coinAction = SKAction.playSoundFileNamed("coin.wav", waitForCompletion: false)
 	let dingAction = SKAction.playSoundFileNamed("ding.wav", waitForCompletion: false)
@@ -359,6 +366,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		worldNode.addChild(player)
 	}
 	
+	func setupPlayerAnimation() {
+		var textures: Array<SKTexture> = []
+		for i in 0..<4 {
+			textures.append(SKTexture(imageNamed: "Bird\(i)"))
+		}
+		for i in 3.stride(to: 0, by: -1) {
+			textures.append(SKTexture(imageNamed: "Bird\(i)"))
+		}
+		
+		let playerAnimation = SKAction.animateWithTextures(textures, timePerFrame: 0.07)
+		player.runAction(SKAction.repeatActionForever(playerAnimation))
+	}
+	
 	func setupSombrero() {
 		sombrero.position = CGPointMake(31 - sombrero.size.width / 2, 29 - sombrero.size.height / 2)
 		player.addChild(sombrero)
@@ -377,6 +397,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		if player.position.y - player.size.height / 2 < playableStart {
 			player.position = CGPoint(x: player.position.x, y: playableStart + player.size.height / 2) // player 静止在 playableStart
 		}
+		
+		if player.position.y < lastTouchY {
+			playerAngularVelocity = -kAngularVelocity.degreesToRadians()
+		}
+		
+		let angularStep = playerAngularVelocity * CGFloat(dt)
+		player.zRotation += angularStep
+		player.zRotation = min(max(player.zRotation, kMinDegrees.degreesToRadians()), kMaxDegrees.degreesToRadians())
 	}
 	
 	func updateForeground() {
@@ -439,6 +467,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		setupPlayer()
 		setupSombrero()
 		setupMainMenu()
+		setupPlayerAnimation()
 	}
 	
 	func switchToTutorial() {
@@ -449,6 +478,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		setupSombrero()
 		setupLabel()
 		setupTutorial()
+		setupPlayerAnimation()
 	}
 	
 	func switchToPlay() {
@@ -467,6 +497,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	
 	func switchToFalling() {
 		gameState = .Falling
+		
+		let shake = SKAction.screenShakeWithNode(worldNode, amount: CGPoint(x: 0, y: 7.0), oscillations: 10, duration: 1.0)
+		worldNode.runAction(shake)
+		
+		let whiteNode = SKSpriteNode(color: SKColor.whiteColor(), size: size)
+		whiteNode.position = CGPoint(x: size.width / 2, y: size.height / 2)
+		whiteNode.zPosition = Layer.Flash.rawValue
+		worldNode.addChild(whiteNode)
+		whiteNode.runAction(SKAction.removeFromParentAfterDelay(0.01))
+		
 		runAction(SKAction.sequence([
 			whackAction,
 			SKAction.waitForDuration(0.1),
@@ -497,6 +537,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	func flapPlayer() {
 		runAction(flappingAction)
 		playerVelocity = CGPointMake(0, kImpluse)
+		
+		playerAngularVelocity = kAngularVelocity.degreesToRadians()
+		lastTouchTime = lastUpdateTime
+		lastTouchY = player.position.y
 		
 		let moveUp = SKAction.moveByX(0, y: 12, duration: 0.15)
 		moveUp.timingMode = .EaseInEaseOut
