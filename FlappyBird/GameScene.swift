@@ -66,34 +66,52 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	let popAction = SKAction.playSoundFileNamed("pop.wav", waitForCompletion: false)
 	let whackAction = SKAction.playSoundFileNamed("whack.wav", waitForCompletion: false)
 	
+	init(size: CGSize, gameState: GameState) {
+		self.gameState = gameState
+		super.init(size: size)
+	}
+	
+	required init?(coder aDecoder: NSCoder) {
+		fatalError("init(coder:) has not been implemented")
+	}
+	
 	override func didMoveToView(view: SKView) {
 		physicsWorld.gravity = CGVector(dx: 0, dy: 0)
 		physicsWorld.contactDelegate = self
 		
 		addChild(worldNode)
-		setupBackground()
-		setupForeground()
-		setupPlayer()
-		setupSombrero()
-		startSpawning()
-		setupLabel()
-		flapPlayer()
+		
+		if gameState == .MainMenu {
+			switchToMainMenu()
+		} else {
+			switchToTutorial()
+		}
 	}
 	
 	override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+		let touch = touches.first
+		let touchLocation = touch?.locationInNode(self)
 		switch gameState {
 		case .MainMenu:
+			if touchLocation?.y < size.height * 0.15 {
+				// learn()
+			} else if touchLocation?.x < size.width * 0.6 {
+				switchToNewGame(.Tutorial)
+			}
 			break
 		case .Tutorial:
+			switchToPlay()
 			break
 		case .Play:
 			flapPlayer()
 		case .Falling:
 			break
 		case .ShowingScore:
-			switchToNewGame()
 			break
 		case .Gameover:
+			if touchLocation?.x < size.width * 0.6 {
+				switchToNewGame(.MainMenu)
+			}
 			break
 		}
 	}
@@ -132,6 +150,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		}
 		
 	}
+	
+	// MARK: - Setup
 	
 	func setupBackground() {
 		let background = SKSpriteNode(imageNamed: "Background")
@@ -180,7 +200,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		}
 		
 		let scorecard = SKSpriteNode(imageNamed: "ScoreCard")
-		scorecard.position = CGPoint(x: size.width / 2, y: size.height / 2)
+		scorecard.position = CGPoint(x: size.width * 0.5, y: size.height * 0.5)
 		scorecard.name = "Tutorial"
 		scorecard.zPosition = Layer.UI.rawValue
 		worldNode.addChild(scorecard)
@@ -188,14 +208,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		let lastScore = SKLabelNode(fontNamed: kFontName)
 		lastScore.fontColor = SKColor(red: 101.0 / 255.0, green: 71.0 / 255.0, blue: 73.0 / 255.0, alpha: 1.0)
 		lastScore.position = CGPoint(x: -scorecard.size.width * 0.25, y: -scorecard.size.height * 0.2)
-		lastScore.text = "\(lastScore)"
-		worldNode.addChild(lastScore)
+		lastScore.text = "\(score)"
+		scorecard.addChild(lastScore)
 		
 		let bestScoreLabel = SKLabelNode(fontNamed: kFontName)
 		bestScoreLabel.fontColor = SKColor(red: 101.0 / 255.0, green: 71.0 / 255.0, blue: 73.0 / 255.0, alpha: 1.0)
 		bestScoreLabel.position = CGPoint(x: scorecard.size.width * 0.25, y: -scorecard.size.height * 0.2)
 		bestScoreLabel.text = "\(self.bestScore())"
-		worldNode.addChild(bestScoreLabel)
+		scorecard.addChild(bestScoreLabel)
 		
 		let gameOver = SKSpriteNode(imageNamed: "GameOver")
 		gameOver.position = CGPoint(x: size.width / 2, y: size.height / 2 + scorecard.size.height / 2 + kMargin + gameOver.size.height / 2)
@@ -261,6 +281,59 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		runAction(pops)
 	}
 	
+	func setupMainMenu() {
+		let logo = SKSpriteNode(imageNamed: "Logo")
+		logo.position = CGPoint(x: size.width / 2, y: size.height * 0.8)
+		logo.zPosition = Layer.UI.rawValue
+		worldNode.addChild(logo)
+		
+		let playButton = SKSpriteNode(imageNamed: "Button")
+		playButton.position = CGPoint(x: size.width * 0.25, y: size.height * 0.25)
+		playButton.zPosition = Layer.UI.rawValue
+		worldNode.addChild(playButton)
+		
+		let play = SKSpriteNode(imageNamed: "Play")
+		play.position = CGPoint.zero
+		playButton.addChild(play)
+		
+		let rateButton = SKSpriteNode(imageNamed: "Button")
+		rateButton.position = CGPoint(x: size.width * 0.75, y: size.height * 0.25)
+		rateButton.zPosition = Layer.UI.rawValue
+		worldNode.addChild(rateButton)
+		
+		let rate = SKSpriteNode(imageNamed: "Rate")
+		rate.position = CGPoint.zero
+		rateButton.addChild(rate)
+		
+		let learn = SKSpriteNode(imageNamed: "button_learn")
+		learn.position = CGPoint(x: size.width * 0.5, y: learn.size.height / 2 + kMargin)
+		learn.zPosition = Layer.UI.rawValue
+		worldNode.addChild(learn)
+		
+		let scaleUp = SKAction.scaleTo(1.02, duration: 0.75)
+		scaleUp.timingMode = .EaseInEaseOut
+		let scaleDown = SKAction.scaleTo(0.98, duration: 0.75)
+		scaleDown.timingMode = .EaseInEaseOut
+		
+		learn.runAction(SKAction.repeatActionForever(SKAction.sequence([
+			scaleUp, scaleDown
+			])))
+	}
+	
+	func setupTutorial() {
+		let tutorial = SKSpriteNode(imageNamed: "Tutorial")
+		tutorial.position = CGPoint(x: size.width * 0.5, y: playableHeight * 0.4 + playableStart)
+		tutorial.name = "Tutorial"
+		tutorial.zPosition = Layer.UI.rawValue
+		worldNode.addChild(tutorial)
+		
+		let ready = SKSpriteNode(imageNamed: "Ready")
+		ready.position = CGPoint(x: size.width * 0.5, y: playableHeight * 0.7 + playableStart)
+		ready.name = "Tutorial"
+		ready.zPosition = Layer.UI.rawValue
+		worldNode.addChild(ready)
+	}
+	
 	func setupPlayer() {
 		player.position = CGPointMake(size.width * 0.2, playableHeight * 0.4 + playableStart)
 		player.zPosition = Layer.Player.rawValue
@@ -290,6 +363,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		sombrero.position = CGPointMake(31 - sombrero.size.width / 2, 29 - sombrero.size.height / 2)
 		player.addChild(sombrero)
 	}
+	
+	// MARK: - Update
 	
 	func updatePlayer() {
 		let gravity = CGPoint(x: 0, y: kGravity) // 设置 y方向上的加速度
@@ -325,7 +400,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 					}
 				}
 				if self.player.position.x > obstacle.position.x + obstacle.size.width / 2 {
-					self.score += 1
+					self.score = self.score + 1
 					self.scoreLabel.text = "\(self.score)"
 					self.runAction(self.coinAction)
 					obstacle.userData?["Passed"] = NSNumber(bool: true)
@@ -334,6 +409,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 			}
 		})
 	}
+	
+	// MARK: - Check
 	
 	func checkHitObstacle() {
 		if hitObstacle {
@@ -354,6 +431,40 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	}
 	
 	// MARK: - Game States
+	
+	func switchToMainMenu() {
+		gameState = .MainMenu
+		setupBackground()
+		setupForeground()
+		setupPlayer()
+		setupSombrero()
+		setupMainMenu()
+	}
+	
+	func switchToTutorial() {
+		gameState = .Tutorial
+		setupBackground()
+		setupForeground()
+		setupPlayer()
+		setupSombrero()
+		setupLabel()
+		setupTutorial()
+	}
+	
+	func switchToPlay() {
+		gameState = .Play
+		
+		worldNode.enumerateChildNodesWithName("Tutorial", usingBlock: { node, stop in
+			node.runAction(SKAction.sequence([
+				SKAction.fadeOutWithDuration(0.5),
+				SKAction.removeFromParent()
+				]))
+		})
+		
+		startSpawning()
+		flapPlayer()
+	}
+	
 	func switchToFalling() {
 		gameState = .Falling
 		runAction(SKAction.sequence([
@@ -372,9 +483,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		setupScorecard()
 	}
 	
-	func switchToNewGame () {
+	func switchToNewGame (gameState: GameState) {
 		runAction(popAction)
-		let newScene = GameScene(size: size)
+		let newScene = GameScene(size: size, gameState: gameState)
 		let transition = SKTransition.fadeWithColor(SKColor.blackColor(), duration: 0.5)
 		view?.presentScene(newScene, transition: transition)
 	}
@@ -477,7 +588,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		NSUserDefaults.standardUserDefaults().synchronize()
 	}
 	
-	// MARK : - SKPhysicsContactDelegate
+	// MARK: - SKPhysicsContactDelegate
+	
 	func didBeginContact(contact: SKPhysicsContact) {
 		let other = contact.bodyA.categoryBitMask == PhysicsCategory.Player ? contact.bodyB : contact.bodyA
 		
